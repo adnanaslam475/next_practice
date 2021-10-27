@@ -1,13 +1,16 @@
-
 import * as firebase from "firebase/app";
 
-export const db = firebase.initializeApp({
-    apiKey: "AIzaSyBxqH55VMdnAOPyt62gEM6w2oH84Nk2Qrc",
-    authDomain: "vuepractice-7ee82.firebaseapp.com",
-    databaseURL: "https://vuepractice-7ee82-default-rtdb.firebaseio.com",
-    projectId: "vuepractice-7ee82",
-    storageBucket: "vuepractice-7ee82.appspot.com",
-    messagingSenderId: "538423555153",
-    appId: "1:538423555153:web:db5235aa601dd2cbd57470",
-    measurementId: "G-LFR5SEN6H9",
-})
+function InitializeFirebase() {
+  var config = {
+    apiKey: "AIzaSyASKkgxQzr4xdqqKTbRtaa5qatpUepiPvI",
+    authDomain: "nextpractice-f72d7.firebaseapp.com",
+    databaseURL: " https://nextpractice-f72d7-default-rtdb.firebaseio.com",
+    projectId: "nextpractice-f72d7",
+    storageBucket: "nextpractice-f72d7.appspot.com",
+    messagingSenderId: "167165309279",
+    appId: "1:167165309279:web:45ed5d616c8ef0c8dd86ea",
+    measurementId: "G-S8LF5WLX6V",
+  };
+  firebase.initializeApp(config);
+}
+export default InitializeFirebase;

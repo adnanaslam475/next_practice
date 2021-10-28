@@ -77,3 +77,6 @@ body, html, .App, #root, .auth-wrapper {
 .forgot-password a {
   color: #167bff;
 }
+.css-hip9hq-MuiPaper-root-MuiAppBar-root{
+  background-color: white !important;
+}

@@ -3,15 +3,14 @@ import * as types from "./types";
 // import db from "../firebaseconfig";
 import cookie from "js-cookie";
 
-export const registers = (data) => {
-    console.log("thus=>", data);
+export const registerSuccess = (data) => {
     return {
         type: types.REGISTER,
+        payload: data
     };
 };
 
 export const reauthenticate = (token) => {
-    console.log("reauthenticater->");
     return (dispatch) => {
         dispatch({
             type: types.REGISTER,
@@ -21,7 +20,6 @@ export const reauthenticate = (token) => {
 };
 
 export const setCookie = (key, value) => {
-    console.log("setCookie");
     if (process.browser) {
         cookie.set(key, value, {
             expires: 1,
@@ -46,8 +44,7 @@ export const register = (inputValues) => {
                 }
             );
             const resData = await res.json();
-            console.log("resdta=>", resData);
-            setCookie("token", resData.token);
+            dispatch(registerSuccess(resData))
             if (!res.ok) {
                 const errorId = resData.error.message;
                 console.log("exist-->", errorId);

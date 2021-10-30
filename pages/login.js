@@ -8,6 +8,8 @@ import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import { wrapper } from "../redux";
+
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
@@ -121,10 +123,9 @@ function SignIn(props) {
 }
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    (store) =>
-      async ({ req }) => {
-        console.log("req->>>>>", req);
-      }
-  );
-  export default connect((state) => state, { login })(SignUp);
-  
+  (store) =>
+    async ({ req }) => {
+      console.log("req->>>>>", req);
+    }
+);
+export default connect((state) => state, { login })(SignIn);

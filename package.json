@@ -25,9 +25,11 @@
     "react-dom": "17.0.2",
     "react-redux": "^7.2.5",
     "redux": "^4.1.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "sass": "^1.43.4"
   },
   "devDependencies": {
+    "css-loader": "^6.5.0",
     "eslint": "8.1.0",
     "eslint-config-next": "11.1.2"
   }

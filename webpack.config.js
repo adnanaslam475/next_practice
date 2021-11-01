@@ -2,9 +2,9 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/i,
-        loader: "css-loader",
+        loader: require.resolve('css-loader'),
         options: {
+          importLoaders: 1,
           modules: false,
         },
       },

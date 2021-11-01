@@ -5,7 +5,8 @@ const initialState = {
   todos: [],
   user: null,
   cards: [],
-  error: [],
+  error: "",
+  token: "",
 };
 
 // create your reducer
@@ -16,13 +17,17 @@ const reducer = (state = initialState, action) => {
       // Attention! This will overwrite client state! Real apps should use proper reconciliation.
       return { ...state, ...action.payload };
     case "REGISTER":
-      console.log("REGITER_reducer===>", action.payload);
       return {
         ...state,
         user: action.payload,
       };
     case "LOGIN":
       return { ...state, user: action.payload };
+    case "AUTHENTICATE":
+      return { ...state, token: action.payload };
+    case "AUTH_ERROR":
+      console.log("AUTHERR_RED", action.payload);
+      return { ...state, error: action.payload };
     default:
       return state;
   }

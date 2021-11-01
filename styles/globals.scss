@@ -17,6 +17,9 @@ a {
 
 @import url("https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800");
 // @import 'Layout.scss';
+@import "./register.scss";
+// @import "./login.scss";
+
 h1,
 h2,
 h3,
@@ -40,4 +43,7 @@ html,
 
 body > .header_box .link {
   color: white !important;
+}
+.container_main{
+  background-color: red;
 }

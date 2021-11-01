@@ -3,27 +3,26 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
+import Link from "next/link";
+import { withSnackbar } from "notistack";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import Cookies from "cookies";
+// import Cookies from "cookies";
 import { register } from "../redux/action";
 import { wrapper } from "../redux";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { connect, useDispatch, useSelector } from "react-redux";
+import styles from "../styles/register.module.scss";
 
 const theme = createTheme();
 
-function SignUp({}) {
-  const s = useSelector((s) => s);
-
-  console.log("whiole state=========>", s);
+function SignUp({ enqueueSnackbar, closeSnackbar }) {
+  const s = useSelector((s) => s.auth);
   const dispatch = useDispatch();
+
   const [err, setErr] = React.useState("");
 
   const handleSubmit = (e) => {
@@ -37,12 +36,12 @@ function SignUp({}) {
       }
       obj[pair[0]] = pair[1];
     }
-    dispatch(register(obj));
+    dispatch(register(obj, enqueueSnackbar, closeSnackbar));
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" className={styles.container} maxWidth="xs">
         <CssBaseline />
         <Box
           sx={{
@@ -89,14 +88,6 @@ function SignUp({}) {
                   autoComplete="new-password"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
             </Grid>
             <Button
               type="submit"
@@ -108,7 +99,7 @@ function SignUp({}) {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
@@ -120,22 +111,25 @@ function SignUp({}) {
   );
 }
 
-// SignUp.getInitialProps = ({ req, res }) => {
-//     const cookies = new Cookies(req, res)
-//     cookies.get('myCookieName')
-//     cookies.set('myCookieName', 'some-value', {
-//         httpOnly: true // true by default
-//     })
-//     // Delete a cookie
-//     cookies.set('myCookieName')
-//     console.log(req, 'res============>',res)
-//     return {};
-// }
-
+SignUp.getInitialProps = async ({ req, res }) => {
+  return { props: [] };
+};
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req }) => {
-      // console.log("req->>>>>", store.getState().auth);
+      // Code here
     }
 );
-export default SignUp;
+// export const getStaticProps = wrapper.getStaticProps(
+//   (store) =>
+//     async ({ req, res }) => {
+//       console.log("getStaticPropsin_reg=--->=>", req, res);
+//     }
+// );
+// export const getServerSideProps = wrapper.getServerSideProps(
+//   (store) =>
+//     async ({ req, res }) => {
+//       console.log("req->>>>>", req, res);
+//     }
+// );
+export default withSnackbar(SignUp);

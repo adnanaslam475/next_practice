@@ -1,10 +1,11 @@
 import * as types from "./types";
-// import * as firebase from 'firebase/app';
-// import db from "../firebaseconfig";
+import * as firebase from "firebase/auth";
+// import * as firebase from "firebase";
+import db from "../firebaseconfig";
 import Router from "next/router";
-// on Submit handler
-// Router.push(url)
+
 import cookie from "js-cookie";
+import { notification } from "../Components/notification";
 
 export const registerSuccess = (data) => {
   return {
@@ -13,26 +14,77 @@ export const registerSuccess = (data) => {
   };
 };
 
+export const removeCookie = (key) => {
+  if (process.browser) {
+    cookie.remove(key, {
+      expires: 1,
+    });
+  }
+};
+export const logout = (...props) => {
+  const [key, notify, closeSnackbar] = props;
+  return async (dispatch) => {
+    const res = await firebase.getAuth().signOut();
+    // const res = await firebase.auth().signOut();
+    dispatch({ type: "AUTHENTICATE", payload: null });
+
+    removeCookie(key);
+    notification("success", "Logout Successfully", notify, closeSnackbar);
+    try {
+    } catch (error) {
+      notification("error", "Cannot Logout", notify, closeSnackbar);
+    }
+  };
+};
+export const getCookieFromBrowser = (key) => {
+  return cookie.get(key);
+};
+
+export const getCookieFromServer = (key, req) => {
+  if (!req.headers.cookie) {
+    return undefined;
+  }
+  console.log("ifffffffffffff", key, req);
+  const rawCookie = req.headers.cookie
+    .split(";")
+    .find((c) => c.trim().startsWith(`${key}=`));
+  console.log("rawcoke----->", rawCookie);
+  if (!rawCookie) {
+    return undefined;
+  }
+  return rawCookie.split("=")[1];
+};
+
+export const getCookie = (key, req) => {
+  return process.browser
+    ? getCookieFromBrowser(key)
+    : getCookieFromServer(key, req);
+};
+
 export const reauthenticate = (token) => {
   return (dispatch) => {
-    dispatch({
-      type: types.REGISTER,
-      payload: token,
-    });
+    dispatch({ type: "AUTHENTICATE", payload: token });
   };
 };
 
+export const checkServerSideCookie = (ctx) => {
+  const token = getCookie("token", ctx.req);
+  console.log("token40-->", token);
+  if (token) {
+    ctx.store.dispatch(reauthenticate(token));
+  }
+};
 export const setCookie = (key, value) => {
   if (process.browser) {
     cookie.set(key, value, {
-      expires: 1,
-      path: "/",
+      expires: 7,
+      path: "",
     });
   }
 };
 
-export const register = (inputValues, history) => {
-  console.log("inps1======>", inputValues);
+export const register = (...props) => {
+  const [inputValues, notify, closeSnackbar] = props;
   return async (dispatch) => {
     try {
       const { email, password } = inputValues;
@@ -50,34 +102,27 @@ export const register = (inputValues, history) => {
       dispatch(registerSuccess(resData));
       if (!res.ok) {
         const errorId = resData.error.message;
-        console.log("exist-->", errorId);
         if (errorId === "EMAIL_EXISTS") {
-        } else {
-          console.log("else35->");
+          notification("error", errorId, notify, closeSnackbar);
         }
       } else {
+        setCookie("token", resData.idToken);
+        notification(
+          "success",
+          "Registered successfully",
+          notify,
+          closeSnackbar
+        );
         Router.push("/");
-
-        // await db.collection("users").add(inputValues);
-        // let d = new Date();
-        // d.setTime(d.getTime() + 1 * 24 * 60 * 60 * 1000);
-        // const user = {
-        //   email: data.email,
-        //   token: data.idToken,
-        //   userId: data.localId,
-        // };
-        // var expires = "expires=" + d.toUTCString();
-        // document.cookie =
-        //   "user" + "=" + JSON.stringify(user) + ";" + expires + ";path=/";
       }
     } catch (error) {
-      console.log("errr49=>", error);
+      notification("error", error, notify, closeSnackbar);
     }
   };
 };
 
-export const login = async (inputValues) => {
-  console.log("inps======>", inputValues);
+export const login = (...props) => {
+  const [inputValues, notify, closeSnackbar] = props;
   return async (dispatch) => {
     try {
       const { email, password } = inputValues;
@@ -97,23 +142,15 @@ export const login = async (inputValues) => {
       );
       const data = await res.json();
       if (data.error?.errors) {
-        console.log(data.error);
-        commit("error", data.error.message, { root: true });
+        notification("error", data.error.message, notify, closeSnackbar);
       } else {
-        let d = new Date();
-        d.setTime(d.getTime() + 1 * 24 * 60 * 60 * 1000);
-        const user = {
-          email: data.email,
-          token: data.idToken,
-          userId: data.localId,
-        };
-        var expires = "expires=" + d.toUTCString();
-        document.cookie =
-          "user" + "=" + JSON.stringify(user) + ";" + expires + ";path=/";
-        store.commit("user", user, { root: true });
+        dispatch(registerSuccess(data));
+        setCookie("token", data.idToken);
+        notification("success", "Login successfully", notify, closeSnackbar);
+        Router.push("/");
       }
     } catch (error) {
-      console.log(error);
+      notification("error", error, notify, closeSnackbar);
     }
   };
 };

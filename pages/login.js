@@ -5,11 +5,12 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
+import Link from "next/link";
+
+import { withSnackbar } from "notistack";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { wrapper } from "../redux";
-
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
@@ -19,7 +20,7 @@ import { login } from "../redux/action";
 
 const theme = createTheme();
 
-function SignIn(props) {
+function SignIn({ enqueueSnackbar, closeSnackbar }) {
   const dispatch = useDispatch();
   const [err, setErr] = React.useState("");
   const s = useSelector((s) => s);
@@ -36,7 +37,7 @@ function SignIn(props) {
       }
       obj[pair[0]] = pair[1];
     }
-    dispatch(props.login(obj));
+    dispatch(login(obj, enqueueSnackbar, closeSnackbar));
   };
 
   React.useEffect(() => {
@@ -110,7 +111,7 @@ function SignIn(props) {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
@@ -121,11 +122,10 @@ function SignIn(props) {
     </ThemeProvider>
   );
 }
-
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req }) => {
-      console.log("req->>>>>", req);
+      // Code here
     }
 );
-export default connect((state) => state, { login })(SignIn);
+export default withSnackbar(SignIn);

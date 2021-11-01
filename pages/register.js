@@ -127,15 +127,9 @@ SignUp.getInitialProps = ({ req, res }) => {
     })
     // Delete a cookie
     cookies.set('myCookieName')
-    console.log(req, 'res============>',res)
+    // console.log(req, 'res============>',res)
     return {};
 }
 
-// export const getServerSideProps = wrapper.getServerSideProps(
-//     (store) =>
-//         async ({ req }) => {
-//             // console.log("req->>>>>", store.getState().auth);
-//         }
-// );
 
 export default SignUp;

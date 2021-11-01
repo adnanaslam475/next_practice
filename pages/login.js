@@ -14,6 +14,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useSelector, useDispatch, connect } from "react-redux";
 import { login } from "../redux/action";
+import { wrapper } from "../redux";
 
 const theme = createTheme();
 
@@ -119,12 +120,10 @@ function SignIn(props) {
     </ThemeProvider>
   );
 }
-
 export const getServerSideProps = wrapper.getServerSideProps(
-    (store) =>
-      async ({ req }) => {
-        console.log("req->>>>>", req);
-      }
-  );
-  export default connect((state) => state, { login })(SignUp);
-  
+  (store) =>
+    async ({ req }) => {
+      console.log("req->>>>>", req);
+    }
+);
+export default connect((state) => state, { login })(SignIn);

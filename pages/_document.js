@@ -1,20 +1,17 @@
-import Document, { Html, Head, Main, NextScript } from 'next/document'
+import React from "react";
+import Document, { Html, Head, Main, NextScript } from "next/document";
 
 class MyDocument extends Document {
-  
   static async getInitialProps(ctx) {
-    const initialProps = await Document.getInitialProps(ctx)
-    return { ...initialProps }
+    const initialProps = await Document.getInitialProps(ctx);
+    return { ...initialProps };
   }
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
-
-    }
+    this.state = {};
   }
 
   render() {
-    
     return (
       <Html>
         <Head />
@@ -23,19 +20,17 @@ class MyDocument extends Document {
           <NextScript />
         </body>
       </Html>
-    )
+    );
   }
 }
 
 export async function getStaticProps() {
   // This is a real endpoint
-  const res = await fetch('https://sampleapis.com/fakebank/api/Accounts');
-  const accounts = await res.json();
   return {
     props: {
-      accounts: accounts.slice(0, 10),
+      accounts: "adnan",
     },
   };
 }
 
-export default MyDocument
+export default MyDocument;

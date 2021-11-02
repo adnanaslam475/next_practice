@@ -1,11 +1,12 @@
 import { HYDRATE } from "next-redux-wrapper";
-import { LOGIN, REGISTER } from "./action";
+// import { LOGIN, REGISTER } from "./action";
 
 const initialState = {
   todos: [],
   user: null,
   cards: [],
-  error: [],
+  error: "",
+  token: "",
 };
 
 // create your reducer
@@ -15,14 +16,18 @@ const reducer = (state = initialState, action) => {
       console.log("hydatre===>", action.payload);
       // Attention! This will overwrite client state! Real apps should use proper reconciliation.
       return { ...state, ...action.payload };
-    case 'REGISTER':
-      console.log("REGITER_reducer===>", action.payload);
+    case "REGISTER":
       return {
         ...state,
         user: action.payload,
       };
-    case 'LOGIN':
+    case "LOGIN":
       return { ...state, user: action.payload };
+    case "AUTHENTICATE":
+      return { ...state, token: action.payload };
+    case "AUTH_ERROR":
+      console.log("AUTHERR_RED", action.payload);
+      return { ...state, error: action.payload };
     default:
       return state;
   }

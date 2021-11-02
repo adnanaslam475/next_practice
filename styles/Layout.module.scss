@@ -1,4 +1,11 @@
-.container {
+@mixin reset-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background-color: rgb(221, 218, 213);
+}
+.container_main {
+  @include reset-list;
   min-height: 100vh;
   padding: 0 0.5rem;
   display: flex;

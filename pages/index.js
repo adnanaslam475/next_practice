@@ -13,6 +13,7 @@ function Home({ token }) {
   useEffect(() => {
     FirebaseFunc();
     dispatch(reauthenticate(token));
+    // checkServerSideCookie(token)
   }, []);
 
   return (
@@ -33,14 +34,16 @@ function Home({ token }) {
   );
 }
 //yhn getserversideprop lazmi h HYDRATE call krane klye
+ 
+//new version
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, res }) => {
-      console.log("res=========>", res);
-      let data = await checkServerSideCookie("tokenss", req);
+      let token = req.headers.cookie.split('=')[1]
+      store.dispatch(reauthenticate(token));
       return {
         props: {
-          token: data,
+          token,
         },
       };
     }

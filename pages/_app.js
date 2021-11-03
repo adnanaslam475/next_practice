@@ -6,16 +6,7 @@ import { wrapper } from "../redux";
 import { checkServerSideCookie, getCookie } from "../redux/action";
 
 const MyApp = ({ Component, pageProps, token }) => {
-  // const getCookieFromBrowser = (key) => {
-  //   return cookie.get(key);
-  // };
-  // useEffect(() => {
-  //   if (!getCookieFromBrowser("token")) {
-  //     router.push("/register");
-  //   }
-  // }, []);
-  console.log("token,,,", token);
-
+   
   return (
     <SnackbarProvider>
       <Layout {...pageProps}>

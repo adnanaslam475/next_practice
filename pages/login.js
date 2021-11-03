@@ -121,16 +121,18 @@ function SignIn({ enqueueSnackbar, closeSnackbar }) {
     </ThemeProvider>
   );
 }
-
 export const getServerSideProps = wrapper.getServerSideProps(
-  async (context) => {
-    checkServerSideCookie(context);
-    const token = context.store.getState().authentication.token;
-    return {
-      props: {
-        token
-      }
-    };
-  }
+  (store) =>
+    async ({ req, res }) => {
+      let token = req.headers.cookie.split('=')[1]
+      store.dispatch(reauthenticate(token));
+      return {
+        props: {
+          token,
+        },
+      };
+    }
 );
+
+
 export default withSnackbar(SignIn);

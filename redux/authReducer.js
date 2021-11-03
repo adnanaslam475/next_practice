@@ -1,5 +1,4 @@
 import { HYDRATE } from "next-redux-wrapper";
-// import { LOGIN, REGISTER } from "./action";
 
 const initialState = {
   todos: [],
@@ -26,7 +25,7 @@ const reducer = (state = initialState, action) => {
     case "AUTHENTICATE":
       return { ...state, token: action.payload };
     case "AUTH_ERROR":
-      console.log("AUTHERR_RED", action.payload);
+      // console.log("AUTHERR_RED", action.payload);
       return { ...state, error: action.payload };
     default:
       return state;

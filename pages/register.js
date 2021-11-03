@@ -114,6 +114,7 @@ function SignUp({ enqueueSnackbar, closeSnackbar }) {
 export const getServerSideProps = wrapper.getServerSideProps(
     (store) =>
         async ({ req }) => {
+            // console.log(req)
         }
 );
 // export const getStaticProps = wrapper.getStaticProps(

@@ -28,7 +28,7 @@ function Header({ enqueueSnackbar, closeSnackbar }) {
             {s.user?.idToken || s?.token ? (
               <div>
                 <Button className="link">
-                  <Link href="/login"> Create </Link>
+                  <Link href="/create_product"> Create </Link>
                 </Button>
                 <Button
                   onClick={() =>

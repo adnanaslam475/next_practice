@@ -20,7 +20,7 @@ const Layout = ({ children, ...pageProps }) => {
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req }) => {
-      console.log("getStaticProps_lyout==>", req, res);
+      // console.log('layout getderversideprops')
     }
 );
 

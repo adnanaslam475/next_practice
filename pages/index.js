@@ -3,7 +3,11 @@ import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/css/bootstrap.css";
 import { wrapper } from "../redux/index";
 import styles from "../styles/Home.module.scss";
-import { checkServerSideCookie, getCookieFromServer, reauthenticate } from "../redux/action";
+import {
+  checkServerSideCookie,
+  getCookieFromServer,
+  reauthenticate,
+} from "../redux/action";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import FirebaseFunc from "../firebaseconfig";
@@ -34,12 +38,12 @@ function Home({ token }) {
   );
 }
 //yhn getserversideprop lazmi h HYDRATE call krane klye
- 
+
 //new version
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, res }) => {
-      let token = req.headers.cookie.split('=')[1]
+      let token = req.headers.cookie?.split("=")[1] || null;
       store.dispatch(reauthenticate(token));
       return {
         props: {

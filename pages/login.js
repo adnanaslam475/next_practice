@@ -14,7 +14,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useSelector, useDispatch, connect } from "react-redux";
-import { checkServerSideCookie, login } from "../redux/action";
+import { checkServerSideCookie, login, reauthenticate } from "../redux/action";
 import { wrapper } from "../redux";
 
 const theme = createTheme();
@@ -121,10 +121,11 @@ function SignIn({ enqueueSnackbar, closeSnackbar }) {
     </ThemeProvider>
   );
 }
+
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, res }) => {
-      let token = req.headers.cookie.split('=')[1]
+      let token = req.headers.cookie?.split('=')[1] || null
       store.dispatch(reauthenticate(token));
       return {
         props: {
@@ -133,6 +134,5 @@ export const getServerSideProps = wrapper.getServerSideProps(
       };
     }
 );
-
 
 export default withSnackbar(SignIn);

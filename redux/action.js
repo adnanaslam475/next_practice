@@ -1,12 +1,51 @@
 import * as types from "./types";
-import * as firebase from "firebase/auth";
-// import * as firebase from "firebase";
-import db from "../firebaseconfig";
+import firebase from "firebase/app";
 import Router from "next/router";
-
 import cookie from "js-cookie";
 import { notification } from "../Components/notification";
 
+export const addProduct = (...props) => {
+  const db = firebase.firestore();
+  const [inputvalues, images, notify, closeSnackbar] = props;
+  return async (dispatch) => {
+    const res = await db.collection("products").add({ ...inputvalues, images });
+    res.onSnapshot((v) => {
+      console.log("line70---------<res", v.data(), v.id);
+    });
+    notification(
+      "success",
+      "Product created successfully",
+      notify,
+      closeSnackbar
+    );
+    dispatch({ type: "ADD_PRODUCT", payload: { inputvalues, images } });
+    Router.push("/");
+    try {
+    } catch (error) {
+      notification("error", "something Went Wrong...", notify, closeSnackbar);
+      console.log("line70---------<res", v.data(), v.id);
+    }
+  };
+};
+
+export const getProducts = (notify, closeSnackbar) => {
+  const db = firebase.firestore();
+  return async (dispatch) => {
+    const res = await db.collection("products").get();
+    let arr = [];
+
+    res.forEach((v) => {
+      console.log("line43=>", v.data());
+      arr.push({ id: v.id, data: v.data() });
+    });
+    dispatch({ type: "GET_PRODUCTS", payload: arr });
+    try {
+    } catch (error) {
+      notification("error", "something Went Wrong...", notify, closeSnackbar);
+      console.log("line70---------<res", error);
+    }
+  };
+};
 export const registerSuccess = (data) => {
   return {
     type: types.REGISTER,
@@ -21,11 +60,12 @@ export const removeCookie = (key) => {
     });
   }
 };
+
 export const logout = (...props) => {
   const [key, notify, closeSnackbar] = props;
   return async (dispatch) => {
-    const res = await firebase.getAuth().signOut();
-    // const res = await firebase.auth().signOut();
+    // const res = await firebase.getAuth().signOut();
+    const res = await firebase.auth().signOut();
     dispatch({ type: "AUTHENTICATE", payload: null });
 
     removeCookie(key);

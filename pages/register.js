@@ -10,7 +10,7 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 // import Cookies from "cookies";
-import { register } from "../redux/action";
+import { reauthenticate, register } from "../redux/action";
 import { wrapper } from "../redux";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -113,14 +113,15 @@ function SignUp({ enqueueSnackbar, closeSnackbar }) {
 
 export const getServerSideProps = wrapper.getServerSideProps(
     (store) =>
-        async ({ req }) => {
-            // console.log(req)
+        async ({ req, res }) => {
+            let token = req.headers.cookie?.split('=')[1] || null
+            store.dispatch(reauthenticate(token));
+            return {
+                props: {
+                    token,
+                },
+            };
         }
 );
-// export const getStaticProps = wrapper.getStaticProps(
-//   (store) =>
-//     async ({ req, res }) => {
-//       console.log("getStaticPropsin_reg=--->=>", req, res);
-//     }
-// );
+
 export default withSnackbar(SignUp);

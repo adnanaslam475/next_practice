@@ -1,4 +1,3 @@
-
 const isTwoRegexEqual = (x, y) => {
   return (
     x instanceof RegExp &&
@@ -48,5 +47,8 @@ const getConfigToAcceptSassFilesWithoutModuleSuffix = (config) => {
 };
 module.exports = {
   reactStrictMode: true,
-  getConfigToAcceptSassFilesWithoutModuleSuffix
+  images: {
+    domains: ["firebasestorage.googleapis.com"],
+    formats: ["image/avif", "image/webp"],
+  },
 };

@@ -16,9 +16,7 @@ a {
 }
 
 @import url("https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800");
-// @import 'Layout.scss';
-@import "./register.scss";
-// @import "./login.scss";
+@import "./register.module.scss";
 
 h1,
 h2,
@@ -44,6 +42,31 @@ html,
 body > .header_box .link {
   color: white !important;
 }
-.container_main{
+.container_main {
   background-color: red;
+}
+.images {
+  width: 100px;
+  height: 150px;
+  border-radius: 10px;
+  opacity: 0.7;
+  border: 2px solid black;
+  cursor: move;
+}
+.images:hover {
+  opacity: 1;
+}
+.carousel .slide .legend {
+  background-color: transparent;
+  background: transparent !important;
+}
+.card_imgs {
+  width: 200px;
+  height: 200px;
+}
+.carousel.carousel-slider .control-arrow {
+  background-color: turquoise;
+}
+.css-1t29gy6-MuiToolbar-root {
+  background-color: rgb(0, 60, 224);
 }

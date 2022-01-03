@@ -12,7 +12,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case HYDRATE:
-      console.log("hydatre===>", action.payload);
+      // console.log("hydrate===>", action.payload);
       // Attention! This will overwrite client state! Real apps should use proper reconciliation.
       return { ...state, ...action.payload };
     case "REGISTER":

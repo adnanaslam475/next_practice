@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { checkServerSideCookie, addProduct } from "../redux/action";
+import {  addProduct } from "../redux/action";
 import { withSnackbar } from "notistack";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -8,6 +8,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 // import Link from "next/link";
 import Grid from "@mui/material/Grid";
+import withAuth from "../Components/WithAuth";
 import Image from "next/image";
 import firebase from "firebase/app";
 import { useSelector, useDispatch } from "react-redux";
@@ -45,9 +46,11 @@ function Create_product({ enqueueSnackbar, closeSnackbar }) {
     if (Object.values(inputvalues).every((v) => v.length) && Images.length) {
       dispatch(addProduct(inputvalues, Images, enqueueSnackbar, closeSnackbar));
     }
+    else{ setUploadErr('Please Enter All fields')}
   };
 
   const onChangeHandler = useCallback((name, value) => {
+    setUploadErr('')
     setinputvalues((prev) => ({
       ...prev,
       [name]: value,
@@ -164,6 +167,7 @@ function Create_product({ enqueueSnackbar, closeSnackbar }) {
               />
             ))}
           </Grid>
+          <p>{uploadErr}</p>
           <Button type="submit" variant="contained">
             SUBMIT
           </Button>
@@ -172,4 +176,4 @@ function Create_product({ enqueueSnackbar, closeSnackbar }) {
     </div>
   );
 }
-export default withSnackbar(Create_product);
+export default withAuth( withSnackbar(Create_product));

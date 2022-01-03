@@ -1,5 +1,6 @@
 import React from "react";
 import { Carousel } from "react-responsive-carousel";
+import { useRouter } from 'next/router'
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -10,23 +11,21 @@ import Typography from "@material-ui/core/Typography";
 import Image from "next/image";
 
 const ProductCard = ({ data }) => {
-  console.log("data", data);
-
+  const router=useRouter()
+// console.log('dataaa...',data)
   return (
-    <Grid md={4} item sm={6} xs={12}>
-      <Card sx={{ maxWidth: 345 }}>
-        <CardActionArea>
+    <Grid md={3}lg={3}xl={3} item sm={6} xs={12}>
+      <Card  >
+        <CardActionArea disableRipple disableTouchRipple>
           <Carousel showArrows={true} onChange={() => ""}>
             {data.data.images?.map((v) => (
-              <div key={v} style={{ position: "relative" }}>
+              <div key={v}className="carousel_inside" style={{ position: "relative" }}>
                 <Image
                   src={v}
                   className="images card_imgs"
                   draggable
-                  // layout="fill"
                   width="100%"
                   height="100%"
-                  // objectFit="contain"
                   onDrag={() => ""}
                   alt="Picture of the author"
                 />
@@ -38,13 +37,13 @@ const ProductCard = ({ data }) => {
             <Typography gutterBottom variant="h5" component="div">
               {data.data.name}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" color="secondary">
               {data.data.details}{" "}
             </Typography>
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button size="small" color="primary">
+          <Button size="small"onClick={()=>router.push(`/article/${data.id}`)} color="primary">
             Details
           </Button>
         </CardActions>

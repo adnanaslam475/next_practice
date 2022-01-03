@@ -31,21 +31,35 @@ export const addProduct = (...props) => {
 export const getProducts = (notify, closeSnackbar) => {
   const db = firebase.firestore();
   return async (dispatch) => {
+    try {
     const res = await db.collection("products").get();
     let arr = [];
 
     res.forEach((v) => {
-      console.log("line43=>", v.data());
       arr.push({ id: v.id, data: v.data() });
     });
     dispatch({ type: "GET_PRODUCTS", payload: arr });
-    try {
     } catch (error) {
       notification("error", "something Went Wrong...", notify, closeSnackbar);
       console.log("line70---------<res", error);
     }
   };
 };
+
+
+export const getProductById = (id,cb,notify,closeSnackbar) => {
+  const db = firebase.firestore();
+  return async (dispatch) => {
+    try {
+    const res = await db.collection("products").doc(id).get();
+     cb(res.data())
+    } catch (error) {
+      notification("error", "something Went Wrong...", notify, closeSnackbar)
+      console.log("line70--------res", error);
+    }
+  };
+};
+
 export const registerSuccess = (data) => {
   return {
     type: types.REGISTER,
@@ -85,7 +99,6 @@ export const getCookieFromServer = (key, req) => {
   if (!req?.headers.cookie) {
     return undefined;
   }
-  console.log("ifffffffffffff", key, req);
   const rawCookie = req.headers.cookie
     .split(";")
     .find((c) => c.trim().startsWith(`${key}=`));
@@ -102,7 +115,7 @@ export const getCookie = (key, req) => {
     : getCookieFromServer(key, req);
 };
 
-export const reauthenticate = (token) => {
+export const reauthenticate = (token,n) => {
   return (dispatch) => {
     dispatch({
       type: "AUTHENTICATE",
@@ -110,12 +123,7 @@ export const reauthenticate = (token) => {
     });
   };
 };
-
-export const checkServerSideCookie = (ctx, req) => {
-  if (req.headers.cookie) {
-    reauthenticate(req.headers.cookie?.split("=")[1] || null);
-  }
-};
+ 
 
 export const setCookie = (key, value) => {
   if (process.browser) {

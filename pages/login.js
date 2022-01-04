@@ -23,7 +23,7 @@ function SignIn({ enqueueSnackbar, closeSnackbar }) {
   const dispatch = useDispatch();
   const [err, setErr] = React.useState("");
   const s = useSelector((s) => s);
-  console.log(s);
+  // console.log(s);
 
   const handleSubmit = (e) => {
     e.preventDefault();

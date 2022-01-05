@@ -4,6 +4,8 @@ import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import CircularProgress from "@mui/material/CircularProgress";
+
 import Checkbox from "@mui/material/Checkbox";
 import Link from "next/link";
 import { withSnackbar } from "notistack";
@@ -14,16 +16,16 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useSelector, useDispatch, connect } from "react-redux";
-import { checkServerSideCookie, login, reauthenticate } from "../redux/action";
+import { login, reauthenticate } from "../redux/action";
 import { wrapper } from "../redux";
 
 const theme = createTheme();
 
 function SignIn({ enqueueSnackbar, closeSnackbar }) {
   const dispatch = useDispatch();
+  const [isloading, setIsLoading] = React.useState(false);
   const [err, setErr] = React.useState("");
   const s = useSelector((s) => s);
-  // console.log(s);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -101,7 +103,11 @@ function SignIn({ enqueueSnackbar, closeSnackbar }) {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              {isloading ? (
+                <CircularProgress color="white" size="20px" />
+              ) : (
+                "Sign In"
+              )}
             </Button>
             <Grid container>
               <Grid item xs>
@@ -125,7 +131,7 @@ function SignIn({ enqueueSnackbar, closeSnackbar }) {
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ req, res }) => {
-      let token = req.headers.cookie?.split('=')[1] || null
+      let token = req.headers.cookie?.split("=")[1] || null;
       store.dispatch(reauthenticate(token));
       return {
         props: {

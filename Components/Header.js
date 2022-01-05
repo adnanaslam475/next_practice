@@ -11,9 +11,9 @@ import { logout } from "../redux/action";
 function Header({ enqueueSnackbar, closeSnackbar }) {
   const s = useSelector((s) => s.auth);
   const dispatch = useDispatch();
-
+// console.log('auth..',s)
   return (
-    <Box sx={{ flexGrow: 1 }} className="header_box">
+    <Box sx={{   }} className="header_box">
       <AppBar position="static">
         <Toolbar style={{ alignItems: "center" }}>
           <Link href="/">News App</Link>

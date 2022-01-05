@@ -1,33 +1,55 @@
-import * as React from "react";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import React from "react";
+import { Carousel } from "react-responsive-carousel";
+import { useRouter } from 'next/router'
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import Image from "next/image";
 
-export default function ProductCard() {
+const ProductCard = ({ data }) => {
+  const router=useRouter()
+// console.log('dataaa...',data)
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardMedia
-        component="img"
-        height="140"
-        image="/static/images/cards/contemplative-reptile.jpg"
-        alt="green iguana"
-      />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          Lizard
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">Details</Button>
-        <Button size="small">EDIT</Button>
-      </CardActions>
-    </Card>
+    <Grid md={3}lg={3}xl={3} item sm={6} xs={12}>
+      <Card  >
+        <CardActionArea disableRipple disableTouchRipple>
+          <Carousel showArrows={true} onChange={() => ""}>
+            {data.data.images?.map((v) => (
+              <div key={v}className="carousel_inside" style={{ position: "relative" }}>
+                <Image
+                  src={v}
+                  className="images card_imgs"
+                  draggable
+                  width="100%"
+                  height="100%"
+                  onDrag={() => ""}
+                  alt="Picture of the author"
+                />
+                <p className="legend">{data.data?.title}</p>
+              </div>
+            ))}
+          </Carousel>
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              {data.data.name}
+            </Typography>
+            <Typography variant="body2" color="secondary">
+              {data.data.details}{" "}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <CardActions>
+          <Button size="small"onClick={()=>router.push(`/article/${data.id}`)} color="primary">
+            Details
+          </Button>
+        </CardActions>
+      </Card>
+    </Grid>
   );
-}
+};
+
+export default ProductCard;

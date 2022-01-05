@@ -14,13 +14,13 @@ import { reauthenticate, register } from "../redux/action";
 import { wrapper } from "../redux";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { connect, useDispatch,  } from "react-redux";
 import styles from "../styles/register.module.scss";
 
 const theme = createTheme();
 
 function SignUp({ enqueueSnackbar, closeSnackbar }) {
-    const s = useSelector((s) => s.auth);
+    // const s = useSelector((s) => s.auth);
     const dispatch = useDispatch();
 
     const [err, setErr] = React.useState("");
@@ -41,7 +41,7 @@ function SignUp({ enqueueSnackbar, closeSnackbar }) {
 
     return (
         <ThemeProvider theme={theme}>
-            <Container component="main" className={styles.container} maxWidth="xs">
+            <Container component="main" className='container' maxWidth="xs">
                 <CssBaseline />
                 <Box
                     sx={{

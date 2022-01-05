@@ -16,9 +16,8 @@ a {
 }
 
 @import url("https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800");
-// @import 'Layout.scss';
-@import "./register.scss";
-// @import "./login.scss";
+@import "./register.module.scss";
+@import "./product-details.module.scss";
 
 h1,
 h2,
@@ -40,10 +39,53 @@ html,
   width: 100%;
   height: 100%;
 }
-
+.d-flex{
+  display: flex !important;
+}
 body > .header_box .link {
   color: white !important;
 }
-.container_main{
-  background-color: red;
+
+.images {
+  width: 100px;
+  height: 150px;
+  border-radius: 10px;
+  opacity: 0.7;
+  cursor: move;
+  border: 2px solid black;
+}
+
+.carousel-root {
+  min-width: 100%;
+}
+.carousel .slide .legend {
+  background-color: transparent;
+  background: transparent !important;
+}
+
+.card_imgs {
+  width: 200px;
+}
+
+.main .carousel img:hover{
+// animation-duration: 0.2s !important;
+}
+.product-details .axis-horizontal ul li div{
+display: flex !important;
+position: initial !important;
+min-height: calc(100vh - 270px);
+.axis-horizontal img{object-fit: contain !important;}
+}
+
+.carousel .control-arrow, .carousel .carousel-slider .control-arrow{
+  background: black !important;
+}
+.control-dots{
+  display: none;
+}
+.css-1t29gy6-MuiToolbar-root {
+  background-color: rgb(0, 60, 224);
+}
+.carousel_inside div{
+  // min-width: 100%;
 }

@@ -11,7 +11,12 @@ export function notification(...args) {
       horizontal: "right",
     },
     action: function (key) {
-      return <Close onClick={() => closeSnackbar(key)} />;
+      return (
+        <Close
+          style={{ cursor: "pointer" }}
+          onClick={() => closeSnackbar(key)}
+        />
+      );
     },
     TransitionComponent: Slide,
   });

@@ -2,10 +2,12 @@ import { createStore, applyMiddleware } from "redux";
 import thunkMiddleware from "redux-thunk";
 import { createWrapper } from "next-redux-wrapper";
 import { combineReducers } from "redux";
-import authReducer from "./authReducer";
+import auth from "./authReducer";
+import products from "./ProductsReducer";
 
 const rootReducer = combineReducers({
-  auth: authReducer,
+  auth,
+  products
 });
 
 const bindMiddleware = (middleware) => {

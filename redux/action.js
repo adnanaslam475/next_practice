@@ -28,36 +28,56 @@ export const addProduct = (...props) => {
   };
 };
 
-export const getProducts = (notify, closeSnackbar) => {
+export const getProducts = (start, notify, closeSnackbar) => {
   const db = firebase.firestore();
   return async (dispatch) => {
     try {
-    const res = await db.collection("products").get();
-    let arr = [];
-
-    res.forEach((v) => {
-      arr.push({ id: v.id, data: v.data() });
-    });
-    dispatch({ type: "GET_PRODUCTS", payload: arr });
+      const res = await db
+        .collection("products")
+        .orderBy("name")
+        .startAfter(start)
+        .limit(3)
+        .get();
+      let arr = [];
+      res.forEach((v) => {
+        arr.push({ id: v.id, data: v.data() });
+      });
+      dispatch({ type: "GET_PRODUCTS", payload: arr });
     } catch (error) {
       notification("error", "something Went Wrong...", notify, closeSnackbar);
-      console.log("line70---------<res", error);
+      // console.log("line70---------<res", error);
     }
   };
 };
 
+// export const getProductById = (id,notify,closeSnackbar) => {
+//   const db = firebase.firestore();
+//   return async (dispatch) => {
+//     try {
+//     const res = await db.collection("products").doc(id).get();
+//     //  cb(res.data())
+//     console.log('res...',res.data())
+//      return res.data()
+//     } catch (error) {
+//       notification("error", "something Went Wrong...", notify, closeSnackbar)
+//       console.log("line70--------res", error);
+//       return error;
+//     }
+//   };
+// };
 
-export const getProductById = (id,cb,notify,closeSnackbar) => {
+export const getProductById = async (id, cb, notify, closeSnackbar) => {
   const db = firebase.firestore();
-  return async (dispatch) => {
-    try {
+  try {
     const res = await db.collection("products").doc(id).get();
-     cb(res.data())
-    } catch (error) {
-      notification("error", "something Went Wrong...", notify, closeSnackbar)
-      console.log("line70--------res", error);
-    }
-  };
+    console.log("res...", res.data());
+    return res.data();
+  } catch (error) {
+    cb();
+    notification("error", "something Went Wrong...", notify, closeSnackbar);
+    console.log("line70--------res", error);
+    return error;
+  }
 };
 
 export const registerSuccess = (data) => {
@@ -78,8 +98,7 @@ export const removeCookie = (key) => {
 export const logout = (...props) => {
   const [key, notify, closeSnackbar] = props;
   return async (dispatch) => {
-    // const res = await firebase.getAuth().signOut();
-    const res = await firebase.auth().signOut();
+    await firebase.auth().signOut();
     dispatch({ type: "AUTHENTICATE", payload: null });
 
     removeCookie(key);
@@ -115,7 +134,7 @@ export const getCookie = (key, req) => {
     : getCookieFromServer(key, req);
 };
 
-export const reauthenticate = (token,n) => {
+export const reauthenticate = (token, n) => {
   return (dispatch) => {
     dispatch({
       type: "AUTHENTICATE",
@@ -123,7 +142,6 @@ export const reauthenticate = (token,n) => {
     });
   };
 };
- 
 
 export const setCookie = (key, value) => {
   if (process.browser) {

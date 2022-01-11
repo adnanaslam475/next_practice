@@ -1,7 +1,6 @@
 import { HYDRATE } from "next-redux-wrapper";
 
 const initialState = {
-  todos: [],
   user: null,
   cards: [],
   error: "",
@@ -12,10 +11,11 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case HYDRATE:
-      // console.log("hydrate===>", action.payload);
+      // console.log("obje...ct1", state);
       // Attention! This will overwrite client state! Real apps should use proper reconciliation.
       return { ...state, ...action.payload };
     case "REGISTER":
+      // console.log("obje...ct", state);
       return {
         ...state,
         user: action.payload,

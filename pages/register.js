@@ -111,17 +111,17 @@ function SignUp({ enqueueSnackbar, closeSnackbar }) {
     );
 }
 
-export const getServerSideProps = wrapper.getServerSideProps(
-    (store) =>
-        async ({ req, res }) => {
-            let token = req.headers.cookie?.split('=')[1] || null
-            store.dispatch(reauthenticate(token));
-            return {
-                props: {
-                    token,
-                },
-            };
-        }
-);
+// export const getServerSideProps = wrapper.getServerSideProps(
+//     (store) =>
+//         async ({ req, res }) => {
+//             let authToken = req.headers.cookie?.split('=')[1] || null
+//             store.dispatch(reauthenticate(token));
+//             return {
+//                 props: {
+//                     authToken,
+//                 },
+//             };
+//         }
+// );
 
 export default withSnackbar(SignUp);

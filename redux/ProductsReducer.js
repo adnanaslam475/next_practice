@@ -3,13 +3,17 @@ import { HYDRATE } from "next-redux-wrapper";
 const initialState = {
   products: [],
   starred: [],
+  isloading: false,
+  page: 0,
+  prevY: 0,
 };
 
 // create your reducer
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case HYDRATE:
-      return { ...state, ...action.payload };
+      // console.log("HYDRATE_PRO", state);
+      return { ...state };
     case "ADD_PRODUCT":
       return {
         ...state,
@@ -18,7 +22,7 @@ const reducer = (state = initialState, action) => {
     case "GET_PRODUCTS":
       return {
         ...state,
-        products: action.payload,
+        products: [...state.products, ...action.payload],
       };
     default:
       return state;

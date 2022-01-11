@@ -42,7 +42,7 @@ function SignIn({ enqueueSnackbar, closeSnackbar }) {
   };
 
   React.useEffect(() => {
-    console.log(err);
+    console.log('err..',err);
   }, []);
 
   return (
@@ -126,19 +126,6 @@ function SignIn({ enqueueSnackbar, closeSnackbar }) {
       </Container>
     </ThemeProvider>
   );
-}
-
-export const getServerSideProps = wrapper.getServerSideProps(
-  (store) =>
-    async ({ req, res }) => {
-      let token = req.headers.cookie?.split("=")[1] || null;
-      store.dispatch(reauthenticate(token));
-      return {
-        props: {
-          token,
-        },
-      };
-    }
-);
+} 
 
 export default withSnackbar(SignIn);

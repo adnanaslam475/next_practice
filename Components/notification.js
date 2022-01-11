@@ -7,7 +7,7 @@ export function notification(...args) {
   return notify(message, {
     variant,
     anchorOrigin: {
-      vertical: "top",
+      vertical: "bottom",
       horizontal: "right",
     },
     action: function (key) {

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import {  addProduct } from "../redux/action";
+import { addProduct } from "../redux/action";
 import { withSnackbar } from "notistack";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -16,14 +16,17 @@ import FirebaseApp from "../firebaseconfig";
 import { FormControl } from "@mui/material";
 import { inputs } from "../constants";
 import "firebase/firestore";
+import { CircularProgress, IconButton } from "@material-ui/core";
+import { Close } from "@mui/icons-material";
 
-function Create_product({ enqueueSnackbar, closeSnackbar }) {
-  const s = useSelector((s) => s.auth);
+function CreateProduct({ enqueueSnackbar, closeSnackbar }) {
+  // const s = useSelector((s) => s.auth);
   const dispatch = useDispatch();
   const [Images, setImages] = useState([]);
   const [uploadErr, setUploadErr] = useState("");
   const [drgitemindex, setDrgitemindex] = useState(null);
   const [uploadedValue, setUplodadedValue] = useState(0);
+  const [isloading, setisloading] = useState(false);
   const frm = useRef();
   const [inputvalues, setinputvalues] = useState({
     name: "",
@@ -44,12 +47,13 @@ function Create_product({ enqueueSnackbar, closeSnackbar }) {
     e.preventDefault();
     if (Object.values(inputvalues).every((v) => v.length) && Images.length) {
       dispatch(addProduct(inputvalues, Images, enqueueSnackbar, closeSnackbar));
+    } else {
+      setUploadErr("Please Enter All fields");
     }
-    else{ setUploadErr('Please Enter All fields')}
   };
 
   const onChangeHandler = useCallback((name, value) => {
-    setUploadErr('')
+    setUploadErr("");
     setinputvalues((prev) => ({
       ...prev,
       [name]: value,
@@ -57,6 +61,7 @@ function Create_product({ enqueueSnackbar, closeSnackbar }) {
   }, []);
 
   const fileHanlder = (e) => {
+    setisloading(true);
     const files = Array.from(e.target.files);
     let imgs = [];
     files.forEach((v) => {
@@ -82,11 +87,11 @@ function Create_product({ enqueueSnackbar, closeSnackbar }) {
               imgs = [...imgs, url];
             })
             .catch((e) => {
-              console.log("err167");
               setUploadErr("Something went wrong..");
             })
             .finally(() => {
               setImages([...Images, ...imgs]);
+              setisloading(false);
             });
         }
       );
@@ -123,7 +128,9 @@ function Create_product({ enqueueSnackbar, closeSnackbar }) {
               <Grid item md={3} sm={6} xs={6}>
                 {v.type === "select" && (
                   <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                    <InputLabel id="demo-simple-select-label">
+                      Product Type
+                    </InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
@@ -145,29 +152,39 @@ function Create_product({ enqueueSnackbar, closeSnackbar }) {
           ))}
           <input
             type="file"
-            accept=".png"
             multiple
             minLength={1}
             onChange={fileHanlder}
           />
           <br />
           <Grid md={12} sm={12} item xs={12}>
-            {Images.map((v, i) => (
-              <Image
-                src={v}
-                className="images"
-                key={i}
-                draggable
-                onDrag={() => setDrgitemindex(i)}
-                onDragEnter={() => i !== drgitemindex && dragover(i)}
-                alt="Picture of the author"
-                width={100}
-                height={100}
-              />
-            ))}
+            {isloading && <CircularProgress />}
+            <br />
+            <div style={{ flexDirection: "row", display: "flex" }}>
+              {Images.map((v, i) => (
+                <div key={i} className="relative img_div">
+                  <IconButton
+                    style={{ position: "absolute", right: 0, zIndex: 5 }}
+                    onClick={() => setImages(Images.filter((vl) => vl != v))}
+                  >
+                    <Close color="secondary" fontSize="medium" />{" "}
+                  </IconButton>
+                  <Image
+                    src={v}
+                    className="images"
+                    draggable
+                    onDrag={() => setDrgitemindex(i)}
+                    onDragEnter={() => i !== drgitemindex && dragover(i)}
+                    alt="Picture of the author"
+                    width={100}
+                    height={100}
+                  />
+                </div>
+              ))}
+            </div>
           </Grid>
           <p>{uploadErr}</p>
-          <Button type="submit" variant="contained">
+          <Button type="submit" disabled={isloading} variant="contained">
             SUBMIT
           </Button>
         </Grid>
@@ -175,4 +192,5 @@ function Create_product({ enqueueSnackbar, closeSnackbar }) {
     </div>
   );
 }
-export default withAuth( withSnackbar(Create_product));
+
+export default withAuth(withSnackbar(CreateProduct));

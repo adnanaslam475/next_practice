@@ -1,16 +1,8 @@
 import React from "react";
 import Document, { Html, Head, Main, NextScript } from "next/document";
+import { wrapper } from "../redux";
 
 class MyDocument extends Document {
-  static async getInitialProps(ctx) {
-    const initialProps = await Document.getInitialProps(ctx);
-    return { ...initialProps };
-  }
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   render() {
     return (
       <Html>
@@ -24,13 +16,16 @@ class MyDocument extends Document {
   }
 }
 
-export async function getStaticProps() {
-  // This is a real endpoint
-  return {
-    props: {
-      accounts: "adnan",
-    },
-  };
-}
-
+// export const getServerSideProps = wrapper.getServerSideProps(
+//   (store) =>
+//     async ({ req, res }) => {
+//       let authToken = req.headers.cookie?.split("=")[1] || null;
+//       console.log("req.headers_documents...", store, req.headers);
+//       return {
+//         props: {
+//           authToken,
+//         },
+//       };
+//     }
+// );
 export default MyDocument;

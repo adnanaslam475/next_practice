@@ -7,7 +7,7 @@ import products from "./ProductsReducer";
 
 const rootReducer = combineReducers({
   auth,
-  products
+  products,
 });
 
 const bindMiddleware = (middleware) => {

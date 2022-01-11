@@ -9,11 +9,16 @@ import { withSnackbar } from "notistack";
 import { logout } from "../redux/action";
 
 function Header({ enqueueSnackbar, closeSnackbar }) {
-  const s = useSelector((s) => s.auth);
+  // const s = useSelector((s) => s.auth);
+
+  let accessToken;
   const dispatch = useDispatch();
-// console.log('auth..',s)
+  if (typeof window !== "undefined") {
+    accessToken = window.document.cookie.split("=")[1];
+  }
+
   return (
-    <Box sx={{   }} className="header_box">
+    <Box sx={{}} className="header_box">
       <AppBar position="static">
         <Toolbar style={{ alignItems: "center" }}>
           <Link href="/">News App</Link>
@@ -25,7 +30,7 @@ function Header({ enqueueSnackbar, closeSnackbar }) {
               color: "white",
             }}
           >
-            {s.user?.idToken || s?.token ? (
+            {accessToken ? (
               <div>
                 <Button className="link">
                   <Link href="/create_product"> Create </Link>

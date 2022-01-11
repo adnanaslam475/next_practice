@@ -54,7 +54,10 @@ body > .header_box .link {
   cursor: move;
   border: 2px solid black;
 }
-
+.relative{position: relative;}
+.img_div{
+  width: 100px;
+}
 .carousel-root {
   min-width: 100%;
 }
@@ -89,3 +92,9 @@ min-height: calc(100vh - 270px);
 .carousel_inside div{
   // min-width: 100%;
 }
+.center {
+  position: absolute;
+left: 50%;
+top: 50%;
+z-index: 10;
+  }

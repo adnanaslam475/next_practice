@@ -38,7 +38,6 @@ function Create_product({ enqueueSnackbar, closeSnackbar }) {
     } else {
       firebase.app();
     }
-    // dispatch(getProducts());
   }, []);
 
   const submit = (e) => {

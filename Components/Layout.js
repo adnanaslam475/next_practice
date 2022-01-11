@@ -3,16 +3,15 @@ import { wrapper } from "../redux";
 // import Cookie from "js-cookie";
 
 const Layout = ({ children, ...pageProps }) => {
-  // const dispatch = useDispatch();
   return <div className='container_main'>{children}</div>;
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(
-  (store) =>
-    async ({ req }) => {
-      console.log('layout getderversideprops', store)
-      console.log('layout getderversideprops', req)
-    }
-);
+// export const getServerSideProps = wrapper.getServerSideProps(
+//   (store) =>
+//     async ({ req }) => {
+      // console.log('layout getderversideprops', store)
+      // console.log('layout getderversideprops', req)
+//     }
+// );
 
 export default Layout;
